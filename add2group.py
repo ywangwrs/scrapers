@@ -24,7 +24,7 @@ gr="\033[1;32m"
 cy="\033[1;36m"
 
 def update_member (user_id, tgt_group, tgt_group_id, error):
-    print("update_member:", user_id, tgt_group, tgt_group_id, error)
+    #print("update_member:", user_id, tgt_group, tgt_group_id, error)
     if error == 'refused':
         document = {"refused": "yes"}
     elif error == 'too_many_grps':
@@ -115,9 +115,9 @@ else:
     available_users = len(list(users))
     print("Total members: %d, members can be added: %d" % (total_users, available_users))
 
-mode = 2
-users = dbmembers.find(mysearch)
-for user in users:
+mode = 1
+while True:
+    user = dbmembers.find_one(mysearch)
     user_id = int(user['user_id'])
     access_hash = int(user['access_hash'])
     time.sleep(1)
@@ -134,6 +134,9 @@ for user in users:
         time.sleep(random.randrange(60, 120))
     except errors.PeerFloodError:
         print(re+"[!] Getting Flood Error from telegram. \n[!] Script is stopping now. Please try again after some time.")
+        sys.exit()
+    except errors.UserBannedInChannelError:
+        print(re+"[!] You're banned from sending messages in supergroups/channels. \n[!] Script is stopping now. Please try again after some time.")
         sys.exit()
     except errors.UserPrivacyRestrictedError:
         print(re+"[!] The user's privacy settings do not allow you to do this. Skipping.")
