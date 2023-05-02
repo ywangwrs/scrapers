@@ -116,6 +116,8 @@ else:
     print("Total members: %d, members can be added: %d" % (total_users, available_users))
 
 mode = 1
+if len(sys.argv) > 2:
+    mode = int(sys.argv[2])
 while True:
     user = dbmembers.find_one(mysearch)
     user_id = int(user['user_id'])
