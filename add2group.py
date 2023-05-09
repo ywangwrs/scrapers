@@ -132,8 +132,8 @@ while True:
             user_to_add = InputPeerUser(user_id, access_hash)
         client(InviteToChannelRequest(target_group_entity,[user_to_add]))
         update_member(user_id, group_title, target_group_id, '')
-        print(gr+"[+] Waiting for 60-120 Seconds...")
-        time.sleep(random.randrange(60, 120))
+        print(gr+"[+] Waiting for 180-300 Seconds...")
+        time.sleep(random.randrange(180,300))
     except errors.PeerFloodError:
         print(re+"[!] Getting Flood Error from telegram. \n[!] Script is stopping now. Please try again after some time.")
         sys.exit()
@@ -144,21 +144,28 @@ while True:
         print(re+"[!] The user's privacy settings do not allow you to do this. Skipping.")
         # Mark this member to be refused
         update_member(user_id, group_title, target_group_id, 'refused')
-        print(re+"[+] Waiting for 60-120 Seconds...")
-        time.sleep(random.randrange(60, 120))
+        print(re+"[+] Waiting for 180-300 Seconds...")
+        time.sleep(random.randrange(180,300))
     except errors.UserChannelsTooMuchError:
         print(re+"[!] One of the users you tried to add is already in too many channels/supergroups (caused by InviteToChannelRequest).")
         # Mark this member to be too_many_grps
         update_member(user_id, group_title, target_group_id, 'too_many_grps')
-        print(re+"[+] Waiting for 60-120 Seconds...")
-        time.sleep(random.randrange(60, 120))
+        print(re+"[+] Waiting for 180-300 Seconds...")
+        time.sleep(random.randrange(180,300))
+        continue
+    except errors.BotGroupsBlockedError:
+        print(re+"[!] This bot can't be added to groups")
+        # Mark this member to be refused
+        update_member(user_id, group_title, target_group_id, 'refused')
+        print(re+"[+] Waiting for 180-300 Seconds...")
+        time.sleep(random.randrange(180,300))
         continue
     except errors.UserIdInvalidError:
         print(re+"[!] Invalid object ID for a user. Make sure to pass the right types (caused by InviteToChannelRequest).")
         # Mark this member to be too_many_grps
         update_member(user_id, group_title, target_group_id, 'invalid_id')
-        print(re+"[+] Waiting for 60-120 Seconds...")
-        time.sleep(random.randrange(60, 120))
+        print(re+"[+] Waiting for 180-300 Seconds...")
+        time.sleep(random.randrange(180,300))
         continue
     except errors.FloodWaitError as e:
         now = datetime.now()
@@ -170,12 +177,12 @@ while True:
         continue
     except errors.ChatAdminRequiredError:
         print(re+"[!] Invalid permissions used for the channel or group (caused by InviteToChannelRequest)")
-        print(re+"[+] Waiting for 60-120 Seconds...")
-        time.sleep(random.randrange(60, 120))
+        print(re+"[+] Waiting for 180-300 Seconds...")
+        time.sleep(random.randrange(180,300))
         continue
     except:
         traceback.print_exc()
         print(re+"[!] Unexpected Error")
-        print(re+"[+] Waiting for 60-120 Seconds...")
-        time.sleep(random.randrange(60, 120))
+        print(re+"[+] Waiting for 180-300 Seconds...")
+        time.sleep(random.randrange(180,300))
         continue
